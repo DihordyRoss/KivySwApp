@@ -1,0 +1,292 @@
+<SingleLineTextInput@TextInput>:
+    multiline: False
+
+WindowManager:
+    MainWindow:
+    SecondWindow:
+
+
+
+## ----------------------------------------------------------------------------------------
+## Main Window --------------------------------------------------------------------------
+<MainWindow>: # 800 x 600
+	name: "main"	
+	
+	
+	#Sw & CheckBox BoxLayout ------------------------------
+	BoxLayout:
+		orientation: 'horizontal'
+		size: 100, 40
+		pos: 30, 300
+		spacing: 50
+		
+
+
+		Switch:
+			id: sw		
+			size_hint: None, None
+			size: 85, 35
+			active: False
+			on_touch_down: root.sw_callback(sw.touch_control)
+			#
+			#		# SwBox Layout
+			#		BoxLayout:
+			#			size_hint: None, None
+			#			size: 85, 35
+			#
+			#			Switch:
+			#				id: sw
+			#				active: False
+			#				on_touch_down: root.sw_callback(sw.touch_control)
+
+
+		# CheckBox Layout
+		BoxLayout:
+			orientation: 'horizontal'
+			size_hint: None, None
+			size: 30, 30
+			valign: 'middle'
+			spacing: 20
+
+			CheckBox:
+				id: chk_timer
+				active: True
+				on_press: root.timer_callback()   
+			
+            
+     # Slider BoxLayout ---------------------------------------------
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: None, None       
+        size: 240, 50
+        pos: 0, 200
+        spacing: 10 
+		
+		Slider:
+			id: slider
+			min: 0
+			max: 60*2
+			value: 10
+			step: 1
+			value_track: True
+			value_track_color: [0.3, 1, 0.3 , .9]
+			cursor_height: 20
+			background_width: 36
+			on_touch_up: root.slider_callback(slider, slider.value)
+       
+
+		Label:
+			id: slider_label
+			multiline: False
+			text_size: self.size
+			halign: 'center'
+			text: str(int(slider.value)) + ' minutos'
+
+
+		
+		
+	# Settings Button Layout -----------------------------------
+	Button:		
+		id: settings_button
+		background_normal: 'img\config_icon.png'
+		size_hint: None, None
+		size: 24, 24
+		pos: 140, 10
+		on_release:
+			app.root.current = 'second'
+			root.manager.transition.direction = "left"
+
+
+	# Exit Button Layout -----------------------------------
+	Button:
+		id: sair
+		background_normal: 'img\exit_icon.jpg'
+		size_hint: None, None
+		size: 24, 24
+		pos: 80, 10
+		on_release: root.exit_()
+
+
+## ----------------------------------------------------------------------------------------
+## Config Window --------------------------------------------------------------------------
+<SecondWindow>: # 240 x 426
+    name: "second"
+			
+	
+	#  WiFi -----------------------------------------
+	# Header WiFi -----------------------------------
+	BoxLayout:
+		canvas:
+			Color:
+				rgba: 0.5, 0.5, 0.5, 0.5
+			Rectangle: 
+				size: self.size
+				pos: self.pos
+			
+		size_hint: None, None 
+		size: 240, 30
+		pos: 0, 390
+		Label: 
+			text: 'Wi-Fi'
+			bold: True
+			
+	
+	# Header SSID/Pass -----------------------------------
+    BoxLayout:
+		orientation: 'horizontal'
+		size_hint: None, None       
+		size: 240, 20
+		pos: 0, 370
+		Label:
+			text: 'SSID'	
+			text_size:self.size
+			halign:'left'
+			valign:'middle'			
+			
+		Label:
+			text: 'Password'	
+			text_size:self.size
+			halign:'left'
+			valign:'middle'			
+
+    BoxLayout:
+		orientation: 'horizontal'
+		size_hint: None, None       
+		size: 240, 30
+		pos: 0, 340
+		spacing: 1		
+		SingleLineTextInput:
+			id: ssid
+			text: "SSID"	
+		SingleLineTextInput:
+			id: ssid_pw
+			text: "Password"			
+
+	# ----------------------------------------
+	# MQTT -----------------------------------
+	BoxLayout:
+		canvas:
+			Color:
+				rgba: 0.5, 0.5, 0.5, 0.5
+			Rectangle: 
+				size: self.size
+				pos: self.pos
+			
+		size_hint: None, None 
+		size: 240, 30
+		pos: 0, 290
+		Label: 
+			text: 'MQTT'
+			bold: True
+	
+	
+	# Header Broker/Port -----------------------------------
+    BoxLayout:
+		orientation: 'horizontal'
+		size_hint: None, None       
+		size: 240, 20
+		pos: 0, 270
+		halign: 'left'
+		Label:
+			text: 'Broker'	
+			size_hint_x: 0.75
+			text_size:self.size
+			halign:'left'
+			valign:'middle'
+			
+		Label:
+			text: 'Port'	
+			size_hint_x: 0.25
+			text_size:self.size
+			halign:'left'
+			valign:'middle'
+			
+    BoxLayout:
+		orientation: 'horizontal'
+		size_hint: None, None       
+		size: 240, 30
+		pos: 0, 240
+		spacing: 1		
+		SingleLineTextInput:
+			id: broker
+			text: "Broker"
+			size_hint_x: 0.75		
+			text_size:self.size
+			halign:'left'
+			valign:'middle'
+			
+		SingleLineTextInput:
+			id: port
+			text: "Port"
+			size_hint_x: 0.25
+			text_size:self.size
+			halign:'left'
+			valign:'middle'			
+			
+	# Header Client ID -----------------------------------
+	BoxLayout:
+		orientation: 'vertical'
+		size_hint: None, None       
+		size: 240, 60
+		pos: 0, 180
+		Label:
+			text: 'Client ID'	
+			text_size:self.size
+			halign:'left'
+			valign:'middle'
+			
+			
+		SingleLineTextInput:
+			id: client_id
+			text: "Client ID"
+			
+	
+	# Header User/Pass -----------------------------------
+	BoxLayout:
+		orientation: 'vertical'
+		size_hint: None, None       
+		size: 240, 120
+		pos: 0, 60	
+		
+		Label:
+			text: 'Username'
+			text_size:self.size
+			halign:'left'
+			valign:'middle'
+		SingleLineTextInput:
+			id: username
+			text: "Username"
+			
+		Label:
+			text: 'Password'
+			text_size:self.size
+			halign:'left'
+			valign:'middle'			
+		SingleLineTextInput:
+			id: broker_pw
+			text: "Password"
+
+
+	# Apply Button -----------------------------------
+	Button:
+		#background_normal: 'img\home_icon3.png'
+		text: 'Aplicar'
+		size_hint: None, None
+		text_size:self.size
+		halign:'center'
+		valign:'middle'			
+		size: 60, 25
+		pos: 20, 10
+		on_release:	root.sett_callback()
+
+
+	# Home Button -----------------------------------
+	Button:
+		background_normal: 'img\home_icon3.png'
+		size_hint: None, None
+		size: 24, 25
+		pos: 110, 10
+		on_release:
+			app.root.current = "main"
+			root.manager.transition.direction = "right"
+			
